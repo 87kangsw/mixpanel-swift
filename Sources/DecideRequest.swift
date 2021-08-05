@@ -67,6 +67,8 @@ class DecideRequest: Network {
                                              headers: ["Accept-Encoding": "gzip"],
                                              parse: responseParser)
 
+        Logger.debug(message: "Greenfinch:: |\(#function)| \(resource)")
+        
         decideRequestHandler(resource: resource,
                              completion: { result in
                                 completion(result)

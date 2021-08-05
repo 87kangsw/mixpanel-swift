@@ -16,11 +16,13 @@ func += <K, V> (left: inout [K: V], right: [K: V]) {
 
 class Track {
     let apiToken: String
+    let serviceName: String
     let lock: ReadWriteLock
     let metadata: SessionMetadata
 
-    init(apiToken: String, lock: ReadWriteLock, metadata: SessionMetadata) {
+    init(apiToken: String, serviceName: String, lock: ReadWriteLock, metadata: SessionMetadata) {
         self.apiToken = apiToken
+        self.serviceName = serviceName
         self.lock = lock
         self.metadata = metadata
     }

@@ -39,6 +39,10 @@
 		86F86F3622497F1200B69832 /* AutomaticEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = E151FA371E70DFB5002EF53D /* AutomaticEvents.swift */; };
 		86F86F3722497F2900B69832 /* AutomaticEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = E151FA371E70DFB5002EF53D /* AutomaticEvents.swift */; };
 		86FC4F202536E15B00D2533F /* placeholder-image.png in Resources */ = {isa = PBXBuildFile; fileRef = 86FC4F1F2536E15B00D2533F /* placeholder-image.png */; };
+		B240F86626BBAFFE00FB8880 /* Greenfinch.swift in Sources */ = {isa = PBXBuildFile; fileRef = B240F86526BBAFFE00FB8880 /* Greenfinch.swift */; };
+		B240F86726BBAFFE00FB8880 /* Greenfinch.swift in Sources */ = {isa = PBXBuildFile; fileRef = B240F86526BBAFFE00FB8880 /* Greenfinch.swift */; };
+		B240F86826BBAFFE00FB8880 /* Greenfinch.swift in Sources */ = {isa = PBXBuildFile; fileRef = B240F86526BBAFFE00FB8880 /* Greenfinch.swift */; };
+		B240F86926BBAFFE00FB8880 /* Greenfinch.swift in Sources */ = {isa = PBXBuildFile; fileRef = B240F86526BBAFFE00FB8880 /* Greenfinch.swift */; };
 		BB9614171F3BB87700C3EF3E /* ReadWriteLock.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB9614161F3BB87700C3EF3E /* ReadWriteLock.swift */; };
 		E10D118D1EC0F30900195CCD /* AutomaticEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = E151FA371E70DFB5002EF53D /* AutomaticEvents.swift */; };
 		E115234D1D7A59AF00657E80 /* UIImageToNSDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = E115234C1D7A59AF00657E80 /* UIImageToNSDictionary.swift */; };
@@ -173,6 +177,7 @@
 		673ABE3921360CBE00B1784B /* Group.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
 		86F86E81224404BD00B69832 /* Mixpanel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Mixpanel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		86FC4F1F2536E15B00D2533F /* placeholder-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "placeholder-image.png"; sourceTree = "<group>"; };
+		B240F86526BBAFFE00FB8880 /* Greenfinch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Greenfinch.swift; sourceTree = "<group>"; };
 		BB9614161F3BB87700C3EF3E /* ReadWriteLock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadWriteLock.swift; sourceTree = "<group>"; };
 		E115234C1D7A59AF00657E80 /* UIImageToNSDictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageToNSDictionary.swift; sourceTree = "<group>"; };
 		E115234E1D7F58B000657E80 /* CGSizeToNSDictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGSizeToNSDictionary.swift; sourceTree = "<group>"; };
@@ -363,6 +368,7 @@
 				E189D8FA1D5A692A007F3F29 /* Utilities */,
 				E115948A1CFF1538007F8B4F /* Mixpanel.swift */,
 				E115948D1D000709007F8B4F /* MixpanelInstance.swift */,
+				B240F86526BBAFFE00FB8880 /* Greenfinch.swift */,
 				E11594921D0036E1007F8B4F /* Persistence.swift */,
 				E115949E1D01BE14007F8B4F /* Flush.swift */,
 				E11594A01D01C597007F8B4F /* Track.swift */,
@@ -815,6 +821,7 @@
 				86F86EBE224439FA00B69832 /* Network.swift in Sources */,
 				86F86EBD224439F500B69832 /* Flush.swift in Sources */,
 				86F86EBC224439F100B69832 /* PrintLogging.swift in Sources */,
+				B240F86926BBAFFE00FB8880 /* Greenfinch.swift in Sources */,
 				86F86EBB224439EB00B69832 /* FlushRequest.swift in Sources */,
 				86F86EBA224439E300B69832 /* Logger.swift in Sources */,
 				86F86EB9224439DC00B69832 /* AutomaticProperties.swift in Sources */,
@@ -840,6 +847,7 @@
 				E11801AE1D7F86320006DD2B /* NSAttributedStringToNSDictionary.swift in Sources */,
 				E174DAE51DA3373600FED703 /* TweakBinding.swift in Sources */,
 				E174DAF71DA45C9D00FED703 /* ChangeMessage.swift in Sources */,
+				B240F86626BBAFFE00FB8880 /* Greenfinch.swift in Sources */,
 				E151FA381E70DFB5002EF53D /* AutomaticEvents.swift in Sources */,
 				E15422291D710587009421A0 /* SnapshotMessage.swift in Sources */,
 				E12BD38D1D91EBE2008989C9 /* SHA256.swift in Sources */,
@@ -936,6 +944,7 @@
 				E12782C51D4AB5CB0025FB05 /* Track.swift in Sources */,
 				E12782C61D4AB5CB0025FB05 /* People.swift in Sources */,
 				E19052001F9548F000900E5D /* ReadWriteLock.swift in Sources */,
+				B240F86726BBAFFE00FB8880 /* Greenfinch.swift in Sources */,
 				E12782C71D4AB5CB0025FB05 /* Error.swift in Sources */,
 				E16522901D67D421000D5949 /* MixpanelType.swift in Sources */,
 				E12782C81D4AB5CB0025FB05 /* Constants.swift in Sources */,
@@ -963,6 +972,7 @@
 				E1F15FDA1E64B60A00391AE3 /* JSONHandler.swift in Sources */,
 				E1F15FE31E64B60D00391AE3 /* Track.swift in Sources */,
 				E19052011F9548F000900E5D /* ReadWriteLock.swift in Sources */,
+				B240F86826BBAFFE00FB8880 /* Greenfinch.swift in Sources */,
 				E1F15FE41E64B60D00391AE3 /* People.swift in Sources */,
 				E1F15FDB1E64B60A00391AE3 /* Error.swift in Sources */,
 				E1F15FD81E64B60200391AE3 /* FileLogging.swift in Sources */,

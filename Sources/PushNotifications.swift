@@ -180,7 +180,7 @@ public class MixpanelPushNotifications {
 
         // Track using project token and distinct_id from push payload
         #if DECIDE
-        let mixpanel = Mixpanel.initialize(token: projectToken)
+        let mixpanel = Mixpanel.initialize(token: projectToken, serviceName: "", isDebugMode: false)
         mixpanel.trackPushNotification(userInfo, event: event, properties: properties)
         mixpanel.flush()
         #endif

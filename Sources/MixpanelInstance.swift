@@ -48,6 +48,11 @@ open class MixpanelInstance: CustomDebugStringConvertible, FlushDelegate, AEDele
     /// apiToken string that identifies the project to track data to
     open var apiToken = ""
 
+    /// serviceName string that identifies the service to track data to
+    open var serviceName = ""
+    
+    open var isDebugMode: Bool = false
+    
     /// The a MixpanelDelegate object that gives control over Mixpanel network activity.
     open var delegate: MixpanelDelegate?
 
@@ -118,19 +123,20 @@ open class MixpanelInstance: CustomDebugStringConvertible, FlushDelegate, AEDele
     /// The base URL used for Mixpanel API requests.
     /// Useful if you need to proxy Mixpanel requests. Defaults to
     /// https://api.mixpanel.com.
-    open var serverURL = BasePath.DefaultMixpanelAPI {
-        didSet {
-            BasePath.namedBasePaths[name] = serverURL
-        }
+    open var serverURL: String {
+        return isDebugMode ? GreenfinchConstants.hostDebug : GreenfinchConstants.host
     }
 
     open var debugDescription: String {
-        return "Mixpanel(\n"
-        + "    Token: \(apiToken),\n"
-        + "    Events Queue Count: \(eventsQueue.count),\n"
-        + "    People Queue Count: \(people.peopleQueue.count),\n"
-        + "    Distinct Id: \(distinctId)\n"
-        + ")"
+        return "Greenfinch(\n"
+            + "    Token: \(apiToken),\n"
+            + "    ServiceName: \(serviceName),\n"
+            + "    DebugMode: \(isDebugMode),\n"
+            + "    ServerURL: \(serverURL)\n"
+            + "    Events Queue Count: \(eventsQueue.count),\n"
+            + "    People Queue Count: \(people.peopleQueue.count),\n"
+            + "    Distinct Id: \(distinctId)\n"
+            + ")"
     }
 
     /// This allows enabling or disabling of all Mixpanel logs at run time.
@@ -276,10 +282,14 @@ open class MixpanelInstance: CustomDebugStringConvertible, FlushDelegate, AEDele
     #endif // DECIDE
 
     #if !os(OSX) && !os(watchOS)
-    init(apiToken: String?, launchOptions: [UIApplication.LaunchOptionsKey: Any]?, flushInterval: Double, name: String, automaticPushTracking: Bool = true, optOutTrackingByDefault: Bool = false) {
+    init(apiToken: String?, serviceName: String? = "", isDebugMode: Bool = false, launchOptions: [UIApplication.LaunchOptionsKey: Any]?, flushInterval: Double, name: String, automaticPushTracking: Bool = true, optOutTrackingByDefault: Bool = false) {
         if let apiToken = apiToken, !apiToken.isEmpty {
             self.apiToken = apiToken
         }
+        if let serviceName = serviceName, !serviceName.isEmpty {
+            self.serviceName = serviceName
+        }
+        self.isDebugMode = isDebugMode
         self.name = name
         self.readWriteLock = ReadWriteLock(label: "com.mixpanel.globallock")
         flushInstance = Flush(basePathIdentifier: name)
@@ -290,6 +300,7 @@ open class MixpanelInstance: CustomDebugStringConvertible, FlushDelegate, AEDele
         trackingQueue = DispatchQueue(label: "\(label).tracking)", qos: .utility)
         sessionMetadata = SessionMetadata(trackingQueue: trackingQueue)
         trackInstance = Track(apiToken: self.apiToken,
+                              serviceName: self.serviceName,
                               lock: self.readWriteLock,
                               metadata: sessionMetadata)
         networkQueue = DispatchQueue(label: "\(label).network)", qos: .utility)
@@ -351,10 +362,14 @@ open class MixpanelInstance: CustomDebugStringConvertible, FlushDelegate, AEDele
         #endif // DECIDE
     }
     #else
-    init(apiToken: String?, flushInterval: Double, name: String, optOutTrackingByDefault: Bool = false) {
+    init(apiToken: String?, serviceName: String? = "", isDebugMode: Bool = false, flushInterval: Double, name: String, optOutTrackingByDefault: Bool = false) {
         if let apiToken = apiToken, !apiToken.isEmpty {
             self.apiToken = apiToken
         }
+        if let serviceName = serviceName, !serviceName.isEmpty {
+            self.serviceName = serviceName
+        }
+        self.isDebugMode = isDebugMode
         self.name = name
         self.readWriteLock = ReadWriteLock(label: "com.mixpanel.globallock")
         flushInstance = Flush(basePathIdentifier: name)
@@ -1087,8 +1102,8 @@ extension MixpanelInstance {
         }
         let defaultsKey = "trackedKey"
         if !UserDefaults.standard.bool(forKey: defaultsKey) {
-            trackingQueue.async { [apiToken, defaultsKey] in
-                Network.trackIntegration(apiToken: apiToken, serverURL: BasePath.DefaultMixpanelAPI) { [defaultsKey] (success) in
+            trackingQueue.async { [apiToken, defaultsKey, serverURL, serviceName] in
+                Network.trackIntegration(apiToken: apiToken, serverURL: serverURL, serviceName: serviceName) { [defaultsKey] (success) in
                     if success {
                         UserDefaults.standard.set(true, forKey: defaultsKey)
                         UserDefaults.standard.synchronize()

@@ -71,7 +71,7 @@ class CodelessBinding: NSObject, NSCoding {
     func track(event: String, properties: Properties) {
         var bindingProperties = properties
         bindingProperties["$from_binding"] = true
-        Mixpanel.mainInstance().track(event: event, properties: bindingProperties)
+        Greenfinch.mainInstance().track(event: event, properties: bindingProperties)
     }
 
 

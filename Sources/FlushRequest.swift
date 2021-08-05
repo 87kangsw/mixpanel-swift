@@ -9,7 +9,7 @@
 import Foundation
 
 enum FlushType: String {
-    case events = "/track/"
+    case events = "/api/publish/"
     case people = "/engage/"
     case groups = "/groups/"
 }

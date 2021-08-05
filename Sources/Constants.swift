@@ -43,3 +43,11 @@ extension UIDevice {
 struct ConnectIntegrationsConstants {
     static let uaMaxRetries = 3
 }
+
+struct GreenfinchConstants {
+    static let hostDebug = "https://event-staging.kcd.partners"
+    static let host = "https://event.kcd.partners"
+    
+    static let platform = "app"
+    static let contentType = "application/json"
+}
