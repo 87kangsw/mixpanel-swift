@@ -292,9 +292,9 @@ open class MixpanelInstance: CustomDebugStringConvertible, FlushDelegate, AEDele
         self.isDebugMode = isDebugMode
         self.name = name
         self.readWriteLock = ReadWriteLock(label: "com.mixpanel.globallock")
-        flushInstance = Flush(basePathIdentifier: name)
+        flushInstance = Flush(basePathIdentifier: name, isDebugMode: isDebugMode, token: self.apiToken)
         #if DECIDE
-            decideInstance = Decide(basePathIdentifier: name, lock: self.readWriteLock)
+            decideInstance = Decide(basePathIdentifier: name, lock: self.readWriteLock, isDebugMode: isDebugMode, token: self.apiToken)
         #endif // DECIDE
         let label = "com.mixpanel.\(self.apiToken)"
         trackingQueue = DispatchQueue(label: "\(label).tracking)", qos: .utility)
@@ -403,7 +403,7 @@ open class MixpanelInstance: CustomDebugStringConvertible, FlushDelegate, AEDele
     #if !os(OSX) && !os(watchOS)
     private func setupListeners() {
         let notificationCenter = NotificationCenter.default
-        trackIntegration()
+        // trackIntegration()
         #if os(iOS) && !targetEnvironment(macCatalyst)
             setCurrentRadio()
         // Temporarily remove the ability to monitor the radio change due to a crash issue might relate to the api from Apple
@@ -1095,7 +1095,7 @@ extension MixpanelInstance {
         }
     }
     #endif // DECIDE
-
+/*
     func trackIntegration() {
         if hasOptedOutTracking() {
             return
@@ -1112,6 +1112,7 @@ extension MixpanelInstance {
             }
         }
     }
+ */
 }
 
 extension MixpanelInstance {

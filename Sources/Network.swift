@@ -10,7 +10,7 @@ import Foundation
 
 struct BasePath {
     // static let DefaultMixpanelAPI = "https://api.mixpanel.com"
-    static var namedBasePaths = [String: String]()
+//    static var namedBasePaths = [String: String]()
 
     static func buildURL(base: String, path: String, queryItems: [URLQueryItem]?) -> URL? {
         guard let url = URL(string: base) else {
@@ -26,8 +26,12 @@ struct BasePath {
         return components.url
     }
 
-    static func getServerURL(identifier: String) -> String {
-        return namedBasePaths[identifier] ?? ""
+//    static func getServerURL(identifier: String) -> String {
+//        return namedBasePaths[identifier] ?? ""
+//    }
+    
+    static func getServerURL(isDebug: Bool) -> String {
+        return isDebug == true ? GreenfinchConstants.hostDebug : GreenfinchConstants.host
     }
 }
 
@@ -55,16 +59,21 @@ enum Reason {
 class Network {
 
     let basePathIdentifier: String
-
-    required init(basePathIdentifier: String) {
+    let isDebugMode: Bool
+    let token: String
+    
+    required init(basePathIdentifier: String, isDebugMode: Bool, token: String) {
         self.basePathIdentifier = basePathIdentifier
+        self.isDebugMode = isDebugMode
+        self.token = token
     }
 
     class func apiRequest<A>(base: String,
                           resource: Resource<A>,
+                          token: String,
                           failure: @escaping (Reason, Data?, URLResponse?) -> Void,
                           success: @escaping (A, URLResponse?) -> Void) {
-        guard let request = buildURLRequest(base, resource: resource) else {
+        guard let request = buildURLRequest(base, resource: resource, token: token) else {
             return
         }
 
@@ -95,7 +104,7 @@ class Network {
         }.resume()
     }
 
-    private class func buildURLRequest<A>(_ base: String, resource: Resource<A>) -> URLRequest? {
+    private class func buildURLRequest<A>(_ base: String, resource: Resource<A>, token: String) -> URLRequest? {
         guard let url = BasePath.buildURL(base: base,
                                           path: resource.path,
                                           queryItems: resource.queryItems) else {
@@ -111,10 +120,14 @@ class Network {
         for (k, v) in resource.headers {
             request.setValue(v, forHTTPHeaderField: k)
         }
+        request.setValue(GreenfinchConstants.contentType, forHTTPHeaderField: "Content-Type")
+        request.setValue(GreenfinchConstants.platform, forHTTPHeaderField: "label")
+        request.setValue(token, forHTTPHeaderField: "jwt")
+        
         return request as URLRequest
     }
 
-    class func  buildResource<A>(path: String,
+    class func buildResource<A>(path: String,
                              method: RequestMethod,
                              requestBody: Data? = nil,
                              queryItems: [URLQueryItem]? = nil,
@@ -127,7 +140,7 @@ class Network {
                         headers: headers,
                         parse: parse)
     }
-
+/*
     class func trackIntegration(apiToken: String, serverURL: String, serviceName: String, completion: @escaping (Bool) -> Void) {
         let requestData = JSONHandler.encodeAPIData([["event": "Integration",
                                                       "properties": ["token": "85053bf24bba75239b16a601d9387e17",
@@ -148,26 +161,16 @@ class Network {
             let requestBody = "ip=1&data=\(requestData)"
                 .data(using: String.Encoding.utf8)
 
-            let fullPath = FlushType.events.rawValue + serviceName
-            let resource = Network.buildResource(path: fullPath,
+            let resource = Network.buildResource(path: FlushType.events.rawValue,
                                                  method: .post,
                                                  requestBody: requestBody,
-                                                 headers: [
-                                                    "Accept-Encoding": "gzip",
-                                                    "Content-Type": GreenfinchConstants.contentType,
-                                                    "jwt": apiToken,
-                                                    "label": GreenfinchConstants.platform
-                                                 ],
+                                                 headers: ["Accept-Encoding": "gzip"],
                                                  parse: responseParser)
 
-            Logger.debug(message: "Greenfinch:: |\(#function)| \(resource)")
-            
             Network.apiRequest(base: serverURL,
                                resource: resource,
-                               failure: { (reason, _, response) in
-                                Logger.debug(message: "Greenfinch:: failed to track integration")
-                                Logger.debug(message: "Greenfinch:: \(reason)")
-                                Logger.debug(message: "Greenfinch:: \(response)")
+                               failure: { (_, _, _) in
+                                Logger.debug(message: "failed to track integration")
                                 completion(false)
                 },
                                success: { (_, _) in
@@ -177,4 +180,5 @@ class Network {
             )
         }
     }
+*/
 }

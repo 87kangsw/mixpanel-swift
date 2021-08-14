@@ -22,6 +22,7 @@ class FlushRequest: Network {
     func sendRequest(_ requestData: String,
                      type: FlushType,
                      useIP: Bool,
+                     isDebugMode: Bool,
                      completion: @escaping (Bool) -> Void) {
 
         let responseParser: (Data) -> Int? = { data in
@@ -32,7 +33,7 @@ class FlushRequest: Network {
             return nil
         }
 
-        let requestBody = "ip=\(useIP ? 1 : 0)&data=\(requestData)"
+        let requestBody = "ip=\(useIP ? 1 : 0)&prop=\(requestData)"
             .data(using: String.Encoding.utf8)
 
         let resource = Network.buildResource(path: type.rawValue,
@@ -41,18 +42,18 @@ class FlushRequest: Network {
                                              headers: ["Accept-Encoding": "gzip"],
                                              parse: responseParser)
 
-        flushRequestHandler(BasePath.getServerURL(identifier: basePathIdentifier),
+        flushRequestHandler(BasePath.getServerURL(isDebug: isDebugMode),
                             resource: resource,
                             completion: { success in
                                 completion(success)
         })
     }
-
+    
     private func flushRequestHandler(_ base: String,
                                      resource: Resource<Int>,
                                      completion: @escaping (Bool) -> Void) {
 
-        Network.apiRequest(base: base, resource: resource,
+        Network.apiRequest(base: base, resource: resource, token: token, 
             failure: { (reason, _, response) in
                 self.networkConsecutiveFailures += 1
                 self.updateRetryDelay(response)

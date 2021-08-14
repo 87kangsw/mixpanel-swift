@@ -72,7 +72,7 @@ class Track {
             p += properties
         }
 
-        var trackEvent: InternalProperties = ["event": ev!, "properties": p]
+        var trackEvent: InternalProperties = ["event": ev!, "prop": p]
         metadata.toDict().forEach { (k, v) in trackEvent[k] = v }
         var shadowEventsQueue = eventsQueue
         Logger.debug(message: "adding event to queue")

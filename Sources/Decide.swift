@@ -49,10 +49,15 @@ class Decide {
 
     let switchboardURL = "wss://switchboard.mixpanel.com"
 
-    required init(basePathIdentifier: String, lock: ReadWriteLock) {
-        self.decideRequest = DecideRequest(basePathIdentifier: basePathIdentifier)
+    let isDebugMode: Bool
+    let token: String
+    
+    required init(basePathIdentifier: String, lock: ReadWriteLock, isDebugMode: Bool, token: String) {
+        self.decideRequest = DecideRequest(basePathIdentifier: basePathIdentifier, isDebugMode: isDebugMode, token: token)
         self.lock = lock
         self.notificationsInstance = InAppNotifications(lock: self.lock)
+        self.isDebugMode = isDebugMode
+        self.token = token
     }
 
     func checkDecide(forceFetch: Bool = false,

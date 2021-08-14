@@ -41,8 +41,13 @@ class Flush: AppLifecycle {
         }
     }
 
-    required init(basePathIdentifier: String) {
-        self.flushRequest = FlushRequest(basePathIdentifier: basePathIdentifier)
+    let isDebugMode: Bool
+    let token: String
+    
+    required init(basePathIdentifier: String, isDebugMode: Bool, token: String) {
+        self.flushRequest = FlushRequest(basePathIdentifier: basePathIdentifier, isDebugMode: isDebugMode, token: token)
+        self.isDebugMode = isDebugMode
+        self.token = token
         flushIntervalReadWriteLock = DispatchQueue(label: "com.mixpanel.flush_interval.lock", qos: .utility, attributes: .concurrent)
     }
 
@@ -140,6 +145,7 @@ class Flush: AppLifecycle {
                 flushRequest.sendRequest(requestData,
                                          type: type,
                                          useIP: useIPAddressForGeoLocation,
+                                         isDebugMode: isDebugMode,
                                          completion: { [weak self, semaphore] success in
                                             guard let self = self else { return }
                                             #if os(iOS)

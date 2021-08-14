@@ -38,7 +38,7 @@ class DecideRequest: Network {
 
             let propertiesData = try! JSONSerialization.data(withJSONObject: peoplePropertiesCopy)
             let propertiesString = String(data: propertiesData, encoding: String.Encoding.utf8)
-            self.properties = URLQueryItem(name: "properties", value: propertiesString)
+            self.properties = URLQueryItem(name: "prop", value: propertiesString)
         }
 
         func toArray() -> [URLQueryItem] {
@@ -77,7 +77,7 @@ class DecideRequest: Network {
 
     private func decideRequestHandler(resource: Resource<DecideResult>,
                                       completion: @escaping (DecideResult?) -> Void) {
-        Network.apiRequest(base: BasePath.getServerURL(identifier: basePathIdentifier), resource: resource,
+        Network.apiRequest(base: BasePath.getServerURL(isDebug: isDebugMode), resource: resource, token: token,
             failure: { (reason, data, response) in
                 Logger.warn(message: "API request to \(resource.path) has failed with reason \(reason)")
                 completion(nil)
