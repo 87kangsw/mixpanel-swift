@@ -136,7 +136,7 @@ class Flush: AppLifecycle {
             // Log data payload sent
             Logger.debug(message: "Sending batch of data")
             Logger.debug(message: batch as Any)
-            let requestData = JSONHandler.encodeAPIData(batch)
+            let requestData = JSONHandler.encodeJSONString(batch)// encodeAPIData(batch)
             if let requestData = requestData {
                 let semaphore = DispatchSemaphore(value: 0)
                 #if os(iOS)
