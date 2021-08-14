@@ -8,10 +8,21 @@
 
 import Foundation
 
-enum FlushType: String {
-    case events = "/api/publish/"
-    case people = "/engage/"
-    case groups = "/groups/"
+enum FlushType {
+    case events(serviceName: String)
+    case people
+    case groups
+    
+    var path: String {
+        switch self {
+        case .events(let serviceName):
+            return "/api/publish/\(serviceName)"
+        case .people:
+            return "/engage/"
+        case .groups:
+            return "/groups/"
+        }
+    }
 }
 
 class FlushRequest: Network {
@@ -36,7 +47,7 @@ class FlushRequest: Network {
         let requestBody = "ip=\(useIP ? 1 : 0)&prop=\(requestData)"
             .data(using: String.Encoding.utf8)
 
-        let resource = Network.buildResource(path: type.rawValue,
+        let resource = Network.buildResource(path: type.path,
                                              method: .post,
                                              requestBody: requestBody,
                                              headers: ["Accept-Encoding": "gzip"],

@@ -292,7 +292,7 @@ open class MixpanelInstance: CustomDebugStringConvertible, FlushDelegate, AEDele
         self.isDebugMode = isDebugMode
         self.name = name
         self.readWriteLock = ReadWriteLock(label: "com.mixpanel.globallock")
-        flushInstance = Flush(basePathIdentifier: name, isDebugMode: isDebugMode, token: self.apiToken)
+        flushInstance = Flush(basePathIdentifier: name, isDebugMode: isDebugMode, token: self.apiToken, serviceName: self.serviceName)
         #if DECIDE
             decideInstance = Decide(basePathIdentifier: name, lock: self.readWriteLock, isDebugMode: isDebugMode, token: self.apiToken)
         #endif // DECIDE
@@ -1201,11 +1201,12 @@ extension MixpanelInstance {
     
     func updateQueue(_ queue: Queue, type: FlushType) {
         self.readWriteLock.write {
-            if type == .events {
+            switch type {
+            case .events:
                 self.flushEventsQueue = queue
-            } else if type == .people {
+            case .people:
                 self.people.flushPeopleQueue = queue
-            } else if type == .groups {
+            case .groups:
                 self.flushGroupsQueue = queue
             }
         }

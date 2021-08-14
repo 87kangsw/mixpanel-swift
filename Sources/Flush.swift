@@ -43,18 +43,20 @@ class Flush: AppLifecycle {
 
     let isDebugMode: Bool
     let token: String
+    let serviceName: String
     
-    required init(basePathIdentifier: String, isDebugMode: Bool, token: String) {
+    required init(basePathIdentifier: String, isDebugMode: Bool, token: String, serviceName: String) {
         self.flushRequest = FlushRequest(basePathIdentifier: basePathIdentifier, isDebugMode: isDebugMode, token: token)
         self.isDebugMode = isDebugMode
         self.token = token
+        self.serviceName = serviceName
         flushIntervalReadWriteLock = DispatchQueue(label: "com.mixpanel.flush_interval.lock", qos: .utility, attributes: .concurrent)
     }
 
     func flushEventsQueue(_ eventsQueue: Queue, automaticEventsEnabled: Bool?) -> Queue? {
         let (automaticEventsQueue, eventsQueue) = orderAutomaticEvents(queue: eventsQueue,
                                                         automaticEventsEnabled: automaticEventsEnabled)
-        var mutableEventsQueue = flushQueue(type: .events, queue: eventsQueue)
+        var mutableEventsQueue = flushQueue(type: .events(serviceName: serviceName), queue: eventsQueue)
         if let automaticEventsQueue = automaticEventsQueue {
             mutableEventsQueue?.append(contentsOf: automaticEventsQueue)
         }
