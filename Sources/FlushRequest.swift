@@ -44,9 +44,11 @@ class FlushRequest: Network {
             return nil
         }
 
-        let requestBody = "ip=\(useIP ? 1 : 0)&prop=\(requestData)"
-            .data(using: String.Encoding.utf8)
+//        let requestBody = "ip=\(useIP ? 1 : 0)&prop=\(requestData)"
+//            .data(using: String.Encoding.utf8)
 
+        let requestBody = requestData.data(using: String.Encoding.utf8)
+        
         let resource = Network.buildResource(path: type.path,
                                              method: .post,
                                              requestBody: requestBody,

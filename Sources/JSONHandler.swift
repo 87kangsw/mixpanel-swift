@@ -136,39 +136,5 @@ class JSONHandler {
         }
         
         return jsonString
-        /*
-         let dic = ["2": "B", "1": "A", "3": "C"]
-         let encoder = JSONEncoder()
-         if let jsonData = try? encoder.encode(dic) {
-             if let jsonString = String(data: jsonData, encoding: .utf8) {
-                 print(jsonString)
-             }
-         }
-         */
-        
-        /*
-         let serializableJSONObject: MPObjectToParse
-         if let jsonObject = makeObjectSerializable(obj) as? [Any] {
-             serializableJSONObject = jsonObject.filter {
-                 JSONSerialization.isValidJSONObject($0)
-             }
-         } else {
-             serializableJSONObject = makeObjectSerializable(obj)
-         }
-         
-         guard JSONSerialization.isValidJSONObject(serializableJSONObject) else {
-             Logger.warn(message: "object isn't valid and can't be serialzed to JSON")
-             return nil
-         }
-         
-         var serializedObject: Data?
-         do {
-             serializedObject = try JSONSerialization
-                 .data(withJSONObject: serializableJSONObject, options: [])
-         } catch {
-             Logger.warn(message: "exception encoding api data")
-         }
-         return serializedObject
-         */
     }
 }
