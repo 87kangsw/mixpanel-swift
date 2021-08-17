@@ -110,7 +110,10 @@ open class Mixpanel {
         } else {
             assert(false, "You have to call initialize(token:) before calling the main instance, " +
                 "or define a new main instance if removing the main one")
-            return Mixpanel.initialize(token: "", serviceName: "", isDebugMode: true)
+            let token = Greenfinch.mainInstance().apiToken
+            let serviceName = Greenfinch.mainInstance().serviceName
+            let isDebugMode = Greenfinch.mainInstance().isDebugMode
+            return Mixpanel.initialize(token: token, serviceName: serviceName, isDebugMode: isDebugMode)
         }
     }
 

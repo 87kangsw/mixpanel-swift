@@ -9,8 +9,6 @@
 import Foundation
 
 struct BasePath {
-    // static let DefaultMixpanelAPI = "https://api.mixpanel.com"
-//    static var namedBasePaths = [String: String]()
 
     static func buildURL(base: String, path: String, queryItems: [URLQueryItem]?) -> URL? {
         guard let url = URL(string: base) else {
@@ -25,10 +23,6 @@ struct BasePath {
         components.percentEncodedQuery = components.percentEncodedQuery?.replacingOccurrences(of: "+", with: "%2B")
         return components.url
     }
-
-//    static func getServerURL(identifier: String) -> String {
-//        return namedBasePaths[identifier] ?? ""
-//    }
     
     static func getServerURL(isDebug: Bool) -> String {
         return isDebug == true ? GreenfinchConstants.hostDebug : GreenfinchConstants.host
